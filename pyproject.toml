@@ -8,9 +8,15 @@ dependencies = [
     "bert-score>=0.3.13",
     "jieba>=0.42.1",
     "jsonlines>=4.0.0",
+    "loguru>=0.7.3",
     "pandas>=2.2.3",
     "rouge>=1.0.1",
     "torch>=2.7.0",
 ]
 [tool.uv]
 index-url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+
+[dependency-groups]
+dev = [
+    "pyright[nodejs]>=1.1.393",
+]
