@@ -274,3 +274,4 @@ law_server/media/
 .pytest_cache/
 rest.http
 .dir-locals.el
+model_output/zero_shot/new_model/*
