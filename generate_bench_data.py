@@ -11,8 +11,11 @@ def read_json(input_file):
     with open(input_file, 'r') as f:
         lines = f.readlines()
         for line in lines:
-            ex = json.loads(line)
-            data_list.append(ex)
+            try:
+                ex = json.loads(line)
+                data_list.append(ex)
+            except Exception as e:
+                logger.info(line)
     return data_list
 
 
@@ -32,7 +35,7 @@ def completion(
     api_key="xxx",
     model_name=""
 ):
-    req_json = {"messages": messages, "repetition_penalty": 1.5} 
+    req_json = {"messages": messages, "repetition_penalty": 1.5}
     if model_name:
         req_json['model'] = model_name 
     logger.info(req_json)
@@ -81,9 +84,10 @@ def main(argv):
         data_list = read_json(input_file)
         outfile = open(output_file, 'w', encoding='utf8')
         for item in data_list:
-            logger.info(item)
             promopt = f"{item['instruction']}\n{item['input']}"
             messages = [{"role": "system", "content": "你是一个法官，旨在针对各种案件类型、审判程序和事实生成相应的法院裁决。你的回答不能含糊、有争议或者离题"},{"role": "user", "content": promopt}]
+            if len(json.dumps(messages)) > 18192:
+                logger.info(len(json.dumps(messages)))
             resp = completion(messages, endpoint=endpoint, api_key=api_key, model_name=model_name)
             prediction = resp['choices'][0]['message']["content"]
             save_dict = {
@@ -93,6 +97,7 @@ def main(argv):
             }
             outline = json.dumps(save_dict,ensure_ascii=False)+'\n'
             outfile.write(outline)
+        outfile.close()
 
 
 if __name__ == "__main__":
