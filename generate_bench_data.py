@@ -35,7 +35,7 @@ def completion(
     api_key="xxx",
     model_name=""
 ):
-    req_json = {"messages": messages, "repetition_penalty": 1.5}
+    req_json = {"messages": messages, "repetition_penalty": 1.5, "temperature": 0.8}
     if model_name:
         req_json['model'] = model_name 
     logger.info(req_json)
