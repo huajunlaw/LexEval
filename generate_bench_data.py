@@ -89,7 +89,11 @@ def main(argv):
             if len(json.dumps(messages)) > 18192:
                 logger.info(len(json.dumps(messages)))
             resp = completion(messages, endpoint=endpoint, api_key=api_key, model_name=model_name)
-            prediction = resp['choices'][0]['message']["content"]
+            try:
+                prediction = resp['choices'][0]['message']["content"]
+            except Exception as e:
+                logger.info(e)
+                continue
             save_dict = {
                 "input": promopt,
                 "output": prediction,
